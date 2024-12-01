@@ -27,8 +27,8 @@ A web scraping pipeline using Python and Kestra for orchestration.
 -scraping:
 
   urls:
-    - https://example.com/data1
-    - https://example.com/data2
+    - https://quotes.toscrape.com/
+    - https://quotes.toscrape.com/page/2/
   schedule: "0 12 * * *" # Every day at noon
   
 -output:
