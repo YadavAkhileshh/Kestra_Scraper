@@ -1,0 +1,83 @@
+# id: website-content-scraper
+# namespace: company.myteam
+# description: "Scrapes content from specified websites and stores it in JSON format"
+# tasks:
+#   - id: run_scraper
+#     type: io.kestra.plugin.docker.RunTask
+#     image: kestra-scraper 
+#     command: ["python", "scraper.py"]  
+
+# triggers:
+#   - id: daily_run
+#     type: io.kestra.plugin.core.trigger.Schedule
+#     cron: "0 9 * * *"  
+
+id: website-content-scraper
+namespace: company.myteam
+description: "Scrapes content from specified websites and stores it in JSON format"
+tasks:
+  - id: run_scraper
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      image: kestra-scraper 
+    commands:
+      - python scraper.py  
+
+triggers:
+  - id: daily_run
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"  
+
+
+
+
+
+    id: website-content-scraper
+namespace: company.myteam
+description: "Scrapes content from specified websites and stores it in JSON format"
+tasks:
+  - id: run_scraper
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      image: yourusername/kestra-scraper  
+    commands:
+      - python scraper.py
+
+triggers:
+  - id: daily_run
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
+
+
+
+    id: web-scraper
+namespace: company.myteam
+description: "Web Scraping Pipeline with Configurable URLs"
+
+inputs:
+  - name: urls
+    type: STRING
+    description: "URLs to scrape (comma-separated)"
+    required: true
+    default: "https://quotes.toscrape.com/,https://quotes.toscrape.com/page/2/"
+
+tasks:
+  - id: run_scraper
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      image: yakhil25/kestra-scraper:latest
+      pullPolicy: ALWAYS
+    env:
+      SCRAPER_URLS: "{{ inputs.urls }}"
+    commands:
+      - python /app/main_scraper.py
+    outputFiles:
+      - "/app/output/*.json"
+
+triggers:
+  - id: daily_scrape
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
